@@ -1,13 +1,13 @@
-Preparation
+## Preparation
   1. enable the hypervisor application in the VM
   2. more core cup and memory, the more performance you will have
   3. download two files from canvas
 ----------------------------------------------------------------------------------------------
-Result:
+## Result:
 
 ![Image of Result](https://github.com/Handsomenick1/linux/blob/master/cmpe283/Screen%20Shot%202021-11-03%20at%2010.06.20%20AM.png)
 
-Steps:
+## Steps:
 
 1. fork the https://github.com/torvalds/linux into your github and download your linux into your VM
 
