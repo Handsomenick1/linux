@@ -45,13 +45,15 @@
 
 20. add "MODULE_LICENSE()" into the "cmpe283-1.c" file
 
-21. call "sudo insmod cmpe283-1.ko" to load the module
+21. call "make"
 
-22. call "dmesg" to check the result for the assignment1
+22. call "sudo insmod cmpe283-1.ko" to load the module
 
-23. call "sudo rmmod cmpe283-1" to remove the module out of the kernel
+23. call "dmesg" to check the result for the assignment1
 
-24. move "MakeFile" and "cmpe283-1.c" to the file you build in linux directroy, then push to git
+24. call "sudo rmmod cmpe283-1" to remove the module out of the kernel
+
+25. move "MakeFile" and "cmpe283-1.c" to the file you build in linux directroy, then push to git
 
 
 
