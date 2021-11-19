@@ -23,7 +23,7 @@
 
 7. call "cp /boot/config-5(chose the one from step 4) .config
 
-8. for some of the cases, may need to call "scripts/config --disable SYSTEM_REVOCATION_KEYS"
+8. for some of the cases, may need check https://askubuntu.com/questions/1329538/compiling-the-kernel-5-11-11 and https://stackoverflow.com/questions/61657707/btf-tmp-vmlinux-btf-pahole-pahole-is-not-available
 
 9. call "make oldconfig" to update the new things, hold the press till it is done
 
