@@ -1282,7 +1282,7 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 			edx = 0;
 		}
 	
-	}else if(eax == 0x4FFFFFFE) {
+	}else if(eax == 0x4FFFFFFC) {
 		//check the exits type of ecx
 		if(is_valid_ecx(&ecx)) {
                         ebx = specific_time[ecx] >> 32;
