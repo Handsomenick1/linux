@@ -5899,10 +5899,9 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 	u32 vectoring_info = vmx->idt_vectoring_info;
 	u16 exit_handler_index;
 	u64 start_time = rdtsc();
-	/*vmx_exit_reason in the vmx.h file*/
-        if (exit_reason.full >= 0 && exit_reason.full <= 69) {
-		number_of_exits[exit_reason.full] += 1;
-	}
+	exit_handler_index = array_index_nospec((u16)exit_reason.basic,
+                                                kvm_vmx_max_exit_handlers);
+        number_of_exits[exit_handler_index] += 1;
 	total_exits++;
 	
 	/*
@@ -6069,9 +6068,9 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 		goto unexpected_vmexit;
 
         total_time  += rdtsc() - start_time;
-	if(exit_reason.full >= 0 && exit_reason.full <= 69) {
-		specific_time[exit_reason.full] = rdtsc() - start_time;
-	}  
+	
+	specific_time[exit_handler_index] = rdtsc() - start_time; 
+	
 	return kvm_vmx_exit_handlers[exit_handler_index](vcpu);
 
 unexpected_vmexit:
@@ -6090,8 +6089,22 @@ unexpected_vmexit:
 
 static int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 {
-	int ret = __vmx_handle_exit(vcpu, exit_fastpath);
+	int ret;
+	struct vcpu_vmx *vmx = to_vmx(vcpu);
+	union vmx_exit_reason exit_reason = vmx->exit_reason;
+	u16 exit_handler_index;
+	u64 endtime;
+	u64 starttime = rdtsc();
+	ret = __vmx_handle_exit(vcpu, exit_fastpath);
+	endtime = rdtsc();
+	
+	exit_handler_index = array_index_nospec((u16)exit_reason.basic,
+                                                kvm_vmx_max_exit_handlers);
+        specific_time[exit_handler_index] += endtime - starttime;
+	number_of_exits[exit_handler_index] += 1;	
+		
 
+        
 	/*
 	 * Exit to user space when bus lock detected to inform that there is
 	 * a bus lock in guest.

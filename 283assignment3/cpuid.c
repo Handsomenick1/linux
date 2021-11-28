@@ -1225,19 +1225,13 @@ EXPORT_SYMBOL_GPL(kvm_cpuid);
 /* The star Operator is used as pointer to a variable */
 /* & operator is used to get the address of the variable */
 
-bool is_valid_ecx(u32 *ecx) {
-        /*NOT in the SDM or not enabled in KVM*/
-        if(*ecx == 35 || *ecx == 38 || *ecx == 42 || *ecx == 65|| *ecx < 0 || *ecx > 69) {
-                return false;
-        }
-        return true;
+bool is_valid_ecx(u32 ecx) {
+       printk(KERN_INFO "Checking ecx");	
+       return ecx != 35 && ecx != 38 && ecx != 42 && ecx != 65 && ecx >= 0 && ecx <= 69;
 }
 
-bool check_type(u32 *ecx) {
-	if(*ecx == 35 || *ecx == 38 || *ecx == 42 || *ecx == 65) {
-		return false;
-	}
-	return true;
+bool check_type(u32 ecx) {
+	return ecx != 5 && ecx != 6 && ecx != 11 && ecx != 17 && ecx != 66 && ecx != 69;
 }
 
 int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
@@ -1264,45 +1258,54 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 		ecx = total_time & 0xFFFFFFFF;
 		printk(KERN_INFO "The low 32 bits sign to exc:%u", ecx);
 	}else if(eax == 0x4FFFFFFD) {
-		//check the exsit type of ecx
-		if(is_valid_ecx(&ecx)) {
-			eax = number_of_exits[ecx];
-			printk(KERN_INFO "The number of exits for the exit number provided in ecx:%u", eax);
-		}else if(check_type(&ecx)) { // not in SDM
+		printk(KERN_INFO "Checking 0x4FFFFFFD");
+		if(is_valid_ecx(ecx)) {
+			if(check_type(ecx){
+				eax = number_of_exits[ecx];
+				printk(KERN_INFO "The number of exits for the exit 
+						number provided in ecx:%u", eax);
+			}else{
+				printk(KERN_INFO "The value %u in ecx is not 
+						enbaled in KVM", ecx);
+                        	eax = 0;
+                        	ebx = 0;
+                        	ecx = 0;
+                        	edx = 0;	
+			}		
+		}else { 
 			printk(KERN_INFO "The value %u in ecx is not in SDM", ecx);
 			eax = 0;
 			ebx = 0;
 			ecx = 0;
 			edx = 0xFFFFFFFF;
-		}else { // not enabled in KVM
-			printk(KERN_INFO "The value %u in ecx is not enabled in KVM", ecx);
-			eax = 0;
-			ebx = 0;
-			ecx = 0;
-			edx = 0;
 		}
 	
 	}else if(eax == 0x4FFFFFFC) {
-		//check the exits type of ecx
-		if(is_valid_ecx(&ecx)) {
-                        ebx = specific_time[ecx] >> 32;
-			ecx = specific_time[ecx] & 0xFFFFFFFF;
-                        printk(KERN_INFO "The high 32 bits of the total time spent for that exit is %u", ebx);
-			printk(KERN_INFO "The low 32 bits of the total time spent for that exit is %u", ecx);
-                }else if(check_type(&ecx)) { // not in SDM
+		if(is_valid_ecx(ecx)) {
+                        if(check_type(ecx){
+                                ebx = specific_time[ecx] >> 32;
+                        	ecx = specific_time[ecx] & 0xFFFFFFFF;
+                        	printk(KERN_INFO "The high 32 bits of the total 
+						time spent for that exit is %u", ebx);
+                        	printk(KERN_INFO "The low 32 bits of the total 
+						time spent for that exit is %u", ecx);
+
+                        }else{
+                                printk(KERN_INFO "The value %u in ecx is 
+						not enabled in KVM", ecx);
+                                eax = 0;
+                                ebx = 0;
+                                ecx = 0;
+                                edx = 0;
+                        }        
+                }else { 
                         printk(KERN_INFO "The value %u in ecx is not in SDM", ecx);
                         eax = 0;
                         ebx = 0;
                         ecx = 0;
                         edx = 0xFFFFFFFF;
-                }else { // not enabled in KVM
-                        printk(KERN_INFO "The value %u in ecx is not enabled in KVM", ecx);
-                        eax = 0;
-                        ebx = 0;
-                        ecx = 0;
-                        edx = 0;
-                }	
-	
+                }
+
 	}else{
 		kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
 	}
