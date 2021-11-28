@@ -1260,13 +1260,11 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 	}else if(eax == 0x4FFFFFFD) {
 		printk(KERN_INFO "Checking 0x4FFFFFFD");
 		if(is_valid_ecx(ecx)) {
-			if(check_type(ecx){
+			if(check_type(ecx)){
 				eax = number_of_exits[ecx];
-				printk(KERN_INFO "The number of exits for the exit 
-						number provided in ecx:%u", eax);
+				printk(KERN_INFO "The number of exits for the exit number provided in ecx: %u", eax);
 			}else{
-				printk(KERN_INFO "The value %u in ecx is not 
-						enbaled in KVM", ecx);
+				printk(KERN_INFO "The value %u in ecx is not enbaled in KVM", ecx);
                         	eax = 0;
                         	ebx = 0;
                         	ecx = 0;
@@ -1282,17 +1280,14 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 	
 	}else if(eax == 0x4FFFFFFC) {
 		if(is_valid_ecx(ecx)) {
-                        if(check_type(ecx){
+                        if(check_type(ecx)){
                                 ebx = specific_time[ecx] >> 32;
                         	ecx = specific_time[ecx] & 0xFFFFFFFF;
-                        	printk(KERN_INFO "The high 32 bits of the total 
-						time spent for that exit is %u", ebx);
-                        	printk(KERN_INFO "The low 32 bits of the total 
-						time spent for that exit is %u", ecx);
+                        	printk(KERN_INFO "The high 32 bits of the total time spent for that exit is %u ", ebx);
+                        	printk(KERN_INFO "The low 32 bits of the total time spent for that exit is %u ", ecx);
 
                         }else{
-                                printk(KERN_INFO "The value %u in ecx is 
-						not enabled in KVM", ecx);
+                                printk(KERN_INFO "The value %u in ecx is not enabled in KVM", ecx);
                                 eax = 0;
                                 ebx = 0;
                                 ecx = 0;
