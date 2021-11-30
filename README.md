@@ -92,7 +92,10 @@ Your assignment is to create a Linux kernel module that will query various MSRs 
 - Of the exit types defined in the SDM, which are the most frequent? Least?
   - The most frequent exit type is External Interrupt.
   - The least frequent exit type is WBINVD.
-## Result:
-
+## Result for assignment1:
 ![Image of Result](https://github.com/Handsomenick1/linux/blob/master/cmpe283/Screen%20Shot%202021-11-03%20at%2010.06.20%20AM.png)
+## Result for assignment2:
+![Image of Result](https://github.com/Handsomenick1/linux/blob/master/cmpe283/assignment2.png)
+## Result for assignment3:
+![Image of Result](https://github.com/Handsomenick1/linux/blob/master/cmpe283/Screen%20Shot%202021-11-28%20at%2013.23.06.png)
 
