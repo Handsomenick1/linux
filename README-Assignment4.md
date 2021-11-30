@@ -1,8 +1,8 @@
 # Assignment4
 
 # result:
-- with ept[!with ept](https://github.com/Handsomenick1/linux/blob/master/283assignment4/with_ept.png)
-- without ept[!without ept](https://github.com/Handsomenick1/linux/blob/master/283assignment4/without_ept.png)
+- [!with ept](https://github.com/Handsomenick1/linux/blob/master/283assignment4/with_ept.png)
+- [!without ept](https://github.com/Handsomenick1/linux/blob/master/283assignment4/without_ept.png)
 
 # What did you learn from the count of exits? Was the count what you expected? If not, why not?
   - With the output, we can see the Shadow paging includes more count of exits than Nested paging.
